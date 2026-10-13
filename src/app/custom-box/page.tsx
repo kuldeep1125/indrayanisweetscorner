@@ -10,6 +10,7 @@
 
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useShop } from "@/context/ShopContext";
 import { PRODUCTS, ProductItem } from "@/data/products";
 import confetti from "canvas-confetti";
@@ -449,31 +450,31 @@ export default function CustomBoxPage() {
       {currentStep === 1 && (
         <div className="space-y-8 animate-fadeIn">
           {/* 1A: Choose Gifting Occasion */}
-          <div className="bg-white dark:bg-zinc-900 p-5 sm:p-7 rounded-3xl border border-gold-400/25 shadow-luxury space-y-4">
+          <div className="bg-white dark:bg-zinc-900 p-4 sm:p-7 rounded-3xl border border-gold-400/25 shadow-luxury space-y-3 sm:space-y-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-saffron-600 dark:text-gold-400">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-saffron-600 dark:text-gold-400">
                 Part 1A
               </span>
-              <h2 className="font-serif text-lg sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+              <h2 className="font-serif text-base sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
                 Select Gifting Celebration & Sentiment
               </h2>
-              <p className="text-xs text-zinc-500 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-zinc-500 mt-0.5">
                 Each occasion features tailored presentation cards and ceremonial blessings.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-2.5">
               {OCCASIONS.map(occ => (
                 <button
                   key={occ.id}
                   onClick={() => setCardOccasion(occ.id)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+                  className={`p-2.5 sm:p-3.5 rounded-2xl border text-left transition-all flex flex-col justify-between ${
                     cardOccasion === occ.id
                       ? "bg-gradient-to-br from-gold-50 via-amber-50 to-white dark:from-zinc-800 dark:to-zinc-800/80 border-gold-400 shadow-md ring-1 ring-gold-400"
                       : "bg-zinc-50/70 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-800 hover:border-gold-300"
                   }`}
                 >
-                  <span className="text-2xl mb-2">{occ.icon}</span>
+                  <span className="text-xl sm:text-2xl mb-1.5">{occ.icon}</span>
                   <div>
                     <div className="font-serif font-bold text-xs text-zinc-900 dark:text-zinc-100 leading-snug">
                       {occ.label}
@@ -1218,39 +1219,66 @@ export default function CustomBoxPage() {
       </div>
 
       {/* =========================================================================
-          PERSISTENT MOBILE ACTION BAR (Fixed on Steps 1-3 for One-Handed Ergonomics)
+          FOCUSED MOBILE BUILDER DOCK (Single Persistent Action Bar with Zero Bottom Nav Conflict)
       ========================================================================== */}
-      {/* [FIXED] Positioned cleanly above native mobile bottom navigation bar with safe area inset */}
-      {currentStep < 4 && (
-        <div className="md:hidden fixed bottom-[calc(60px+env(safe-area-inset-bottom,0px))] inset-x-0 z-40 bg-zinc-950/95 backdrop-blur-xl border-t border-gold-400/30 p-3 shadow-2xl">
-          <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
-            <div>
-              <div className="font-serif font-bold text-lg text-gold-300 leading-tight">
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-[#14080A]/95 backdrop-blur-xl border-t border-gold-400/35 px-4 py-3 pb-[calc(12px+env(safe-area-inset-bottom,0px))] shadow-[0_-8px_30px_rgba(0,0,0,0.8)]">
+        <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
+          {/* Price & Slot Count */}
+          <div>
+            <span className="text-[10px] text-zinc-400 font-medium block leading-tight">
+              Gift Pack Total
+            </span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-serif font-bold text-lg xs:text-xl text-gold-300 leading-none">
                 ₹{estimatedPrice}
-              </div>
-              <div className="text-[10px] text-zinc-300">
-                {totalAssigned}/{boxSize} slots filled
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setCurrentStep(4)}
-                className="px-3 py-2.5 rounded-xl bg-white/10 text-white text-xs font-semibold border border-white/20"
-              >
-                Review
-              </button>
-              <button
-                onClick={() => setCurrentStep((currentStep + 1) as 1 | 2 | 3 | 4)}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-saffron-600 to-amber-500 text-white text-xs font-bold shadow-md flex items-center gap-1.5 active:scale-95"
-              >
-                <span>Next</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </span>
+              <span className="text-[10px] text-zinc-300 font-medium">
+                ({totalAssigned}/{boxSize} slots)
+              </span>
             </div>
           </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            {currentStep > 1 ? (
+              <button
+                onClick={() => setCurrentStep((currentStep - 1) as 1 | 2 | 3 | 4)}
+                className="min-h-[44px] px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-zinc-200 text-xs font-semibold border border-white/20 active:scale-95 transition-all flex items-center gap-1"
+                aria-label="Previous step"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back</span>
+              </button>
+            ) : (
+              <Link
+                href="/menu"
+                className="min-h-[44px] px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-zinc-300 text-xs font-semibold border border-white/20 active:scale-95 transition-all flex items-center justify-center"
+                aria-label="Exit gift builder to menu"
+              >
+                <span>Exit</span>
+              </Link>
+            )}
+
+            {currentStep < 4 ? (
+              <button
+                onClick={() => setCurrentStep((currentStep + 1) as 1 | 2 | 3 | 4)}
+                className="min-h-[44px] px-4 py-2.5 rounded-xl bg-gradient-to-r from-saffron-600 via-amber-500 to-gold-400 hover:from-saffron-500 hover:to-gold-300 text-white font-bold text-xs shadow-lg flex items-center gap-1.5 active:scale-95 transition-all"
+              >
+                <span>Continue</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            ) : (
+              <button
+                onClick={handleAddToCart}
+                className="min-h-[44px] px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs shadow-lg flex items-center gap-1.5 active:scale-95 transition-all"
+              >
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>Add to Bag</span>
+              </button>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

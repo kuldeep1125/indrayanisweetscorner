@@ -73,7 +73,7 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-1.5 min-w-0">
-                <span className="font-serif text-xs sm:text-base md:text-lg font-bold tracking-tight transition-colors text-white group-hover:text-gold-300 drop-shadow-sm truncate max-w-[130px] xs:max-w-[190px] sm:max-w-none">
+                <span className="font-serif text-sm sm:text-base md:text-lg font-bold tracking-tight transition-colors text-white group-hover:text-gold-300 drop-shadow-sm whitespace-nowrap">
                   Indrayani Sweet Corner
                 </span>
                 <span className="hidden 2xl:inline-block text-[10px] bg-saffron-500/20 text-saffron-300 px-1.5 py-0.5 rounded-full font-medium border border-saffron-400/40">
@@ -108,8 +108,8 @@ export default function Navbar() {
 
           {/* Right Header Actions — Strictly Identical Across All Pages */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Compact Multilingual Pill: EN | MR | HI */}
-            <div className="flex items-center rounded-full p-0.5 border text-[10px] sm:text-xs shrink-0 bg-black/60 border-gold-400/30 text-white">
+            {/* Multilingual Pill: EN | MR | HI (Hidden on mobile < sm to eliminate header overcrowding; fully accessible in mobile drawer) */}
+            <div className="hidden sm:flex items-center rounded-full p-0.5 border text-[10px] sm:text-xs shrink-0 bg-black/60 border-gold-400/30 text-white">
               {(["en", "mr", "hi"] as Language[]).map(lang => (
                 <button
                   key={lang}
@@ -184,7 +184,27 @@ export default function Navbar() {
             })}
           </div>
 
-          <div className="pt-3 border-t border-white/15 space-y-3">
+          {/* Multilingual Selector inside Mobile Drawer */}
+          <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs">
+            <span className="text-zinc-300 font-semibold">Language / भाषा:</span>
+            <div className="flex items-center rounded-full p-1 border bg-black/60 border-gold-400/40">
+              {(["en", "mr", "hi"] as Language[]).map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={`px-3 py-1 rounded-full font-bold transition-all text-xs ${
+                    language === lang
+                      ? "bg-saffron-600 text-white shadow-xs"
+                      : "text-zinc-300 hover:text-white"
+                  }`}
+                >
+                  {lang === "en" ? "EN" : lang === "mr" ? "मराठी" : "हिंदी"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-1 space-y-3">
             <div className="flex items-center justify-between text-xs text-zinc-300">
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-gold-400" />

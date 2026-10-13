@@ -49,8 +49,13 @@ export default function MenuPage() {
     };
     if (selectedProductDetails) {
       window.addEventListener("keydown", handleKeyDown);
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = originalOverflow;
+      };
     }
-    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedProductDetails]);
 
   const categories: { key: ProductCategory; label: string; count: number }[] = useMemo(() => {
@@ -134,7 +139,7 @@ export default function MenuPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 sm:space-y-12 pb-32 md:pb-16">
       {/* Editorial Luxury Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
         <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gold-400/10 border border-gold-400/30 text-saffron-600 dark:text-gold-300 text-[11px] sm:text-xs font-bold tracking-wider uppercase text-center">
@@ -486,107 +491,127 @@ export default function MenuPage() {
         </div>
       </div>
 
-      {/* Ingredient & Halwai Craft Modal */}
+      {/* Ingredient & Halwai Craft Modal (Accessible Native Mobile Bottom Sheet & Desktop Dialog) */}
       {selectedProductDetails && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-craft-title"
-          className="fixed inset-0 z-50 overflow-y-auto p-4 flex items-center justify-center"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
         >
+          {/* Backdrop Tap to Dismiss */}
           <div
             onClick={() => setSelectedProductDetails(null)}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md transition-opacity"
+            className="fixed inset-0"
             aria-hidden="true"
           />
-          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-zinc-900 border border-gold-400/40 rounded-3xl p-5 sm:p-8 shadow-2xl z-10 space-y-5">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <span className="text-[10px] uppercase tracking-widest text-gold-600 font-bold">
+
+          {/* Modal Container with Dynamic Viewport Height & Independent Scroll */}
+          <div className="relative w-full max-w-lg max-h-[85dvh] sm:max-h-[90dvh] flex flex-col bg-white dark:bg-zinc-900 border-t sm:border border-gold-400/40 rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden z-10">
+            {/* Sticky Header with Always-Visible Close Button */}
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md shrink-0">
+              <div className="min-w-0 pr-2">
+                <span className="text-[10px] uppercase tracking-widest text-gold-600 dark:text-gold-400 font-bold block">
                   Halwai Craft Dossier
                 </span>
-                <h3 id="modal-craft-title" className="font-serif font-bold text-lg sm:text-xl text-zinc-900 dark:text-zinc-100 mt-0.5">
+                <h3 id="modal-craft-title" className="font-serif font-bold text-base sm:text-xl text-zinc-900 dark:text-zinc-100 truncate">
                   {selectedProductDetails.name}
                 </h3>
-                <p className="text-xs text-zinc-500 font-serif">{selectedProductDetails.nameMr}</p>
+                <p className="text-[11px] text-zinc-500 font-serif truncate">{selectedProductDetails.nameMr}</p>
               </div>
               <button
                 onClick={() => setSelectedProductDetails(null)}
                 aria-label="Close craft dossier"
-                className="w-10 h-10 flex items-center justify-center rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors flex-shrink-0"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition-colors flex-shrink-0 active:scale-95"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="relative h-44 rounded-2xl overflow-hidden border border-gold-400/20">
-              <Image
-                src={selectedProductDetails.image}
-                alt={selectedProductDetails.name}
-                fill
-                className="object-cover"
-              />
+            {/* Scrollable Modal Body */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
+              <div className="relative h-44 sm:h-52 rounded-2xl overflow-hidden border border-gold-400/20 shrink-0">
+                <Image
+                  src={selectedProductDetails.image}
+                  alt={selectedProductDetails.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="space-y-4 text-xs">
+                <div>
+                  <h4 className="font-bold text-zinc-800 dark:text-zinc-200 mb-1.5 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>Sourced Ingredients:</span>
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedProductDetails.ingredients.map((ing, i) => (
+                      <span
+                        key={i}
+                        className="bg-gold-50 dark:bg-gold-950/40 text-gold-900 dark:text-gold-200 border border-gold-400/30 px-2.5 py-1 rounded-lg text-xs"
+                      >
+                        {ing}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-zinc-800 dark:text-zinc-200 mb-1.5 flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-amber-600" />
+                    <span>Allergen Information:</span>
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedProductDetails.allergens.map((all, i) => (
+                      <span
+                        key={i}
+                        className="bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 border border-amber-300/40 px-2.5 py-1 rounded-lg text-xs"
+                      >
+                        {all}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-zinc-800 dark:text-zinc-200 mb-1.5 flex items-center gap-1.5">
+                    <Award className="w-4 h-4 text-saffron-600" />
+                    <span>Culinary Tags:</span>
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedProductDetails.tags.map((t, i) => (
+                      <span
+                        key={i}
+                        className="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40 px-2.5 py-1 rounded-lg text-xs"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-4 text-xs">
-              <div>
-                <h4 className="font-bold text-zinc-800 dark:text-zinc-200 mb-1.5 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Sourced Ingredients:</span>
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedProductDetails.ingredients.map((ing, i) => (
-                    <span
-                      key={i}
-                      className="bg-gold-50 dark:bg-gold-950/40 text-gold-900 dark:text-gold-200 border border-gold-400/30 px-2.5 py-1 rounded-lg"
-                    >
-                      {ing}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-bold text-zinc-800 dark:text-zinc-200 mb-1.5 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-amber-600" />
-                  <span>Allergen Information:</span>
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedProductDetails.allergens.map((all, i) => (
-                    <span
-                      key={i}
-                      className="bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 border border-amber-300/40 px-2.5 py-1 rounded-lg"
-                    >
-                      {all}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-bold text-zinc-800 dark:text-zinc-200 mb-1.5 flex items-center gap-1.5">
-                  <Award className="w-4 h-4 text-saffron-600" />
-                  <span>Culinary Tags:</span>
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedProductDetails.tags.map((t, i) => (
-                    <span
-                      key={i}
-                      className="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40 px-2.5 py-1 rounded-lg"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+            {/* Sticky Action Footer with Safe-Area Inset */}
+            <div className="p-3 sm:p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/95 flex items-center gap-2.5 shrink-0 pb-[calc(14px+env(safe-area-inset-bottom,0px))]">
+              <button
+                onClick={() => setSelectedProductDetails(null)}
+                className="py-3 px-4 bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 text-zinc-800 dark:text-zinc-200 font-bold text-xs rounded-xl transition-all"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  handleAddToCartWithCelebration(selectedProductDetails, getWeightForProduct(selectedProductDetails));
+                  setSelectedProductDetails(null);
+                }}
+                className="flex-1 py-3 px-4 bg-gradient-to-r from-saffron-600 to-amber-500 hover:from-saffron-500 hover:to-amber-400 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-95"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Add to Bag • ₹{calculatePrice(selectedProductDetails, getWeightForProduct(selectedProductDetails))}</span>
+              </button>
             </div>
-
-            <button
-              onClick={() => setSelectedProductDetails(null)}
-              className="w-full py-3 bg-maroon-700 hover:bg-maroon-800 text-white font-bold text-xs rounded-xl shadow-md transition-all"
-            >
-              Close Dossier
-            </button>
           </div>
         </div>
       )}

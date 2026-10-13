@@ -25,6 +25,12 @@ export default function MobileBottomNav() {
   const pathname = usePathname();
   const { totalItemCount, setIsCartOpen } = useShop();
 
+  // [FIXED] When user is inside the focused Custom Gift Box creator workflow,
+  // hide global bottom navigation so the single focused builder action dock gets 100% of the screen.
+  if (pathname.startsWith("/custom-box")) {
+    return null;
+  }
+
   const navItems = [
     {
       href: "/",
@@ -64,7 +70,7 @@ export default function MobileBottomNav() {
     <nav
       role="navigation"
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#120B09]/95 backdrop-blur-xl border-t border-gold-400/30 shadow-[0_-8px_30px_rgba(0,0,0,0.7)] select-none pb-[calc(env(safe-area-inset-bottom,0px)+6px)] pt-1.5 transition-all"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#120B09]/95 backdrop-blur-xl border-t border-gold-400/30 shadow-[0_-8px_30px_rgba(0,0,0,0.7)] select-none pb-[calc(env(safe-area-inset-bottom,0px)+6px)] pt-1.5 transition-all"
     >
       <div className="max-w-md mx-auto px-2 flex items-center justify-around">
         {navItems.map((item) => {
