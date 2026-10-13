@@ -2,22 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
+/* [ADDED] Luxury Indian Confectionery Design Tokens & Reset */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FCFBF7;
+  --foreground: #1A1615;
+  --gold-accent: #D4AF37;
+  --maroon-deep: #681622;
+  --saffron-vibrant: #D95D1E;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #120F0E;
+    --foreground: #F8F5EC;
+    --gold-accent: #E8D075;
+    --maroon-deep: #8C2434;
+    --saffron-vibrant: #F77F38;
   }
+}
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-gutter: stable;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  font-family: var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
+}
+
+/* Luxury Gold Foil & Shimmer Accents */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #B89224 0%, #F3E5AB 50%, #B89224 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.saffron-gradient-text {
+  background: linear-gradient(135deg, #BA4914 0%, #F77F38 50%, #D95D1E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border-gradient {
+  border-image: linear-gradient(to right, #D4AF37, #F3E5AB, #D4AF37) 1;
+}
+
+/* Subtle traditional Jali / Mandala background pattern */
+.bg-jali-pattern {
+  background-color: var(--background);
+  background-image: radial-gradient(rgba(212, 175, 55, 0.08) 1.5px, transparent 1.5px),
+                    radial-gradient(rgba(104, 22, 34, 0.04) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+}
+
+/* Custom Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1EBDC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B89224;
 }
 
 @layer utilities {
@@ -25,3 +86,312 @@ body {
     text-wrap: balance;
   }
 }
+
+/* [ADDED] Exact Rasrang Sweets CSS Architecture, Layouts & Animations */
+.font-script {
+  font-family: var(--font-great-vibes), cursive, sans-serif;
+}
+
+/* [FIXED] Royal Navbar Base Layout & Geometry (strictly uniform size, position and zero layout shift) */
+.royal-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+  color: #fff !important;
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* [FIXED] Non-Home Pages: Solid Deep Royal Obsidian Backdrop (guaranteed 100% contrast against light cream/white pages) */
+.royal-navbar-solid {
+  background-color: #120305 !important;
+  background: rgba(18, 3, 5, 0.96) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3) !important;
+}
+
+/* [FIXED] Home Page Parallax Scroll: Dynamically adapts color tone to match the active slide */
+/* Slide 0: Royal Maroon Hero (.bannerscene) */
+.royal-navbar-slide-0 {
+  background-color: #1a0407 !important;
+  background: rgba(26, 4, 7, 0.90) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35) !important;
+}
+
+/* Slide 1: Olive Gold Sweets (.movable_bg1) */
+.royal-navbar-slide-1 {
+  background-color: #594f10 !important;
+  background: rgba(89, 79, 16, 0.92) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.45) !important;
+}
+
+/* Slide 2: Royal Plum Dry Fruits (.movable_bg2) */
+.royal-navbar-slide-2 {
+  background-color: #3a124e !important;
+  background: rgba(58, 18, 78, 0.92) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.40) !important;
+}
+
+/* Slide 3: Amber Saffron Festival (.movable_bg3) */
+.royal-navbar-slide-3 {
+  background-color: #dd8a00 !important;
+  background: rgba(221, 138, 0, 0.92) !important;
+  border-bottom: 1px solid rgba(255, 230, 160, 0.45) !important;
+}
+
+/* Slide 4: Spiced Terracotta Namkeens (.movable_bgdokala) */
+.royal-navbar-slide-4 {
+  background-color: #d25d0a !important;
+  background: rgba(210, 93, 10, 0.92) !important;
+  border-bottom: 1px solid rgba(255, 220, 150, 0.45) !important;
+}
+
+/* [FIXED] Authentic section background colors matching Rasrang architecture with high-contrast royal palettes */
+.bannerscene {
+  height: 100vh;
+  width: 100vw;
+  background-color: #1a0407 !important;
+  background: radial-gradient(circle at 50% 35%, #3d0d17 0%, #20050a 65%, #0d0103 100%) !important;
+  background-image: radial-gradient(circle at 50% 35%, rgba(61, 13, 23, 0.90) 0%, rgba(32, 5, 10, 0.96) 65%, #0d0103 100%), url('/rasrang_elements/bg_footer.png') !important;
+  background-size: cover, 1200px auto !important;
+  background-repeat: no-repeat, repeat;
+  overflow: hidden;
+  position: relative;
+}
+
+@keyframes bg-move {
+  from { background-position: 0 10000%; }
+  to { background-position: 0 0; }
+}
+
+.movable_bg1 {
+  background-image: url('/rasrang_elements/movable1.png');
+  background-size: 100%;
+  background-repeat: repeat;
+  animation: bg-move 600s linear infinite;
+  background-color: #594f10 !important;
+}
+
+.movable_bg2 {
+  background-image: url('/rasrang_elements/movable1.png');
+  background-size: 100%;
+  background-repeat: repeat;
+  animation: bg-move 600s linear infinite;
+  background-color: #3a124e !important;
+}
+
+.movable_bg3 {
+  background-color: #dd8a00 !important;
+}
+
+.movable_bgdokala {
+  background-image: url('/rasrang_elements/dokala.png');
+  background-size: 100%;
+  background-repeat: repeat;
+  animation: bg-move 600s linear infinite;
+  background-color: #d25d0a !important;
+}
+
+/* [FIXED] Explicit composite class bindings ensuring solid colors over transparent body */
+.sweets,
+.coloredsect.sweets {
+  background-color: #594f10 !important;
+}
+
+.dryfruit,
+.coloredsect.dryfruit {
+  background-color: #3a124e !important;
+}
+
+.festival,
+.coloredsect.festival {
+  background-color: #dd8a00 !important;
+}
+
+.namkeens,
+.coloredsect.namkeens {
+  background-color: #d25d0a !important;
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-2deg);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 8s ease-in-out infinite;
+}
+
+.jumbo_title {
+  color: #fff !important;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-weight: 700;
+  font-family: var(--font-great-vibes), cursive;
+  font-size: clamp(2rem, 5vw, 3.8rem) !important;
+  margin-bottom: 0;
+  line-height: 1.15;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+}
+
+.sweet_divider img {
+  max-width: clamp(140px, 20vw, 260px);
+  margin: 4px auto;
+}
+
+.coloredsect {
+  border-radius: 0 !important;
+  background-image: url('/rasrang_elements/bg_footer.png') !important;
+  background-size: 1200px auto !important;
+  background-repeat: repeat;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: max(40px, 5vh);
+  padding-bottom: max(30px, 4vh);
+}
+
+.coloredsect h3 {
+  color: #fff;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.biscuit_block {
+  display: inline-block;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.biscuit_block img {
+  max-width: 85%;
+  max-height: clamp(160px, 36vh, 440px);
+  object-fit: contain;
+  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.45));
+  margin: 0 auto;
+}
+
+/* [FIXED] Exact Rasrang Iconic Animated Corner-Border Buttons with high contrast */
+.slider_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+  position: relative;
+  padding: 0.65em 2.4em;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #fff !important;
+  margin-top: 10px;
+  background: rgba(15, 3, 5, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.slider_btn:before {
+  content: '';
+  display: block;
+  height: 10px;
+  width: 10px;
+  border-bottom: 2px solid #D4AF37;
+  border-left: 2px solid #D4AF37;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transition: 0.3s ease;
+}
+
+.slider_btn:after {
+  content: '';
+  display: block;
+  height: 10px;
+  width: 10px;
+  border-top: 2px solid #D4AF37;
+  border-right: 2px solid #D4AF37;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.3s ease;
+}
+
+.slider_btn:hover:before,
+.slider_btn:hover:after {
+  width: 100%;
+  height: 100%;
+}
+
+.slider_btn:hover {
+  background: rgba(212, 175, 55, 0.35);
+  color: #fff;
+  border-color: #D4AF37;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
+}
+
+/* [FIXED] Luxury Royal Frosted Glass Footer instead of harsh black bar */
+.homefooter {
+  background: rgba(14, 3, 5, 0.95) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 10px 18px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  color: #d4d4d8;
+  z-index: 30;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.homefooter a {
+  color: #fff !important;
+  text-decoration: none !important;
+  transition: color 0.2s;
+}
+
+.homefooter a:hover {
+  color: #d4af37 !important;
+}
+

@@ -34,3 +34,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# temporary media extraction dumps
+scripts/*.mp4
+scripts/*.m4a
+scripts/*.tmp
+scripts/*_frames/
+scripts/beauty/
+scripts/preview/
+scripts/laddu_beauty/

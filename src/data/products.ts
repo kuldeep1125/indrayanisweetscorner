@@ -1,0 +1,235 @@
+// [ADDED] Product catalogue updated with authentic, verified real photographs from India
+export type ProductCategory = 
+  | "all" 
+  | "traditional_mithai" 
+  | "dry_fruit_specials" 
+  | "bengali_delights" 
+  | "breakfast_snacks" 
+  | "namkeen_savouries" 
+  | "festive_hampers";
+
+export interface ProductItem {
+  id: string;
+  name: string;
+  nameMr: string;
+  nameHi: string;
+  category: ProductCategory;
+  pricePerKg?: number;
+  fixedPrice?: number;
+  unit: "kg" | "piece" | "plate" | "box";
+  shortDesc: string;
+  shortDescMr: string;
+  ingredients: string[];
+  allergens: string[];
+  tags: string[];
+  isBestseller?: boolean;
+  isPureGhee?: boolean;
+  isFestiveSpecial?: boolean;
+  modelType: "kaju_katli" | "motichoor" | "peda" | "gulab_jamun" | "barfi" | "modak";
+  image: string;
+}
+
+export const PRODUCTS: ProductItem[] = [
+  {
+    id: "kaju-katli-royal",
+    name: "Royal Kaju Katli",
+    nameMr: "शाही काजू कतली",
+    nameHi: "शाही काजू कतली",
+    category: "dry_fruit_specials",
+    pricePerKg: 1050,
+    unit: "kg",
+    shortDesc: "Authentic diamond-cut cashew confection prepared from premium cashews and delicate edible silver leaf vark.",
+    shortDescMr: "उत्कृष्ट काजू आणि चांदीचा वर्ख असलेली पारंपरिक डायमंड-कट काजू कतली.",
+    ingredients: ["Premium Cashews", "Sugar", "Cardamom", "Vegetable Silver Vark"],
+    allergens: ["Tree Nuts (Cashews)"],
+    tags: ["Pure Cashew", "Bestseller", "Eggless", "Festive Essential"],
+    isBestseller: true,
+    modelType: "kaju_katli",
+    image: "/images/dishes/kaju_katli.jpg",
+  },
+  {
+    id: "motichoor-ladoo-ghee",
+    name: "Desi Ghee Motichoor Laddoo",
+    nameMr: "शुद्ध तुपातील मोतीचूर लाडू",
+    nameHi: "शुद्ध घी मोतीचूर लड्डू",
+    category: "traditional_mithai",
+    pricePerKg: 680,
+    unit: "kg",
+    shortDesc: "Melt-in-mouth golden gram flour boondi pearls cooked in 100% pure cow ghee, soaked in saffron syrup.",
+    shortDescMr: "शुद्ध गाईच्या तुपात तळलेले, केशर आणि पिस्त्याने सजवलेले मऊ रसाळ मोतीचूर लाडू.",
+    ingredients: ["Gram Flour (Besan)", "Pure Cow Ghee", "Sugar Syrup", "Kashmiri Saffron", "Pistachios", "Melon Seeds"],
+    allergens: ["Dairy (Ghee)", "Tree Nuts (Pistachios)"],
+    tags: ["Pure Cow Ghee", "Bestseller", "Prasad Special", "Eggless"],
+    isBestseller: true,
+    isPureGhee: true,
+    isFestiveSpecial: true,
+    modelType: "motichoor",
+    image: "/images/dishes/motichoor_ladoo.jpg",
+  },
+  {
+    id: "pista-kesar-peda",
+    name: "Kesar Pista Peda",
+    nameMr: "केशर पिस्ता पेढा",
+    nameHi: "केसर पिस्ता पेड़ा",
+    category: "traditional_mithai",
+    pricePerKg: 720,
+    unit: "kg",
+    shortDesc: "Authentic slow-reduced whole milk mawa infused with crushed green cardamom and topped with pistachios.",
+    shortDescMr: "अस्सल खव्यापासून बनवलेला, वेलची आणि पिस्त्याची चव असलेला मऊ पेढा.",
+    ingredients: ["Slow-Cooked Mawa (Khoya)", "Sugar", "Green Cardamom", "Kashmiri Saffron", "Slivered Pistachios"],
+    allergens: ["Dairy (Mawa/Milk)", "Tree Nuts (Pistachios)"],
+    tags: ["Fresh Mawa", "Pure Ghee", "Traditional", "Eggless"],
+    isBestseller: true,
+    modelType: "peda",
+    image: "/images/dishes/kesar_peda.jpg",
+  },
+  {
+    id: "gulab-jamun-shahi",
+    name: "Shahi Gulab Jamun",
+    nameMr: "शाही गुलाबजामुन",
+    nameHi: "शाही गुलाब जामुन",
+    category: "traditional_mithai",
+    pricePerKg: 540,
+    unit: "kg",
+    shortDesc: "Golden fried mawa dumplings steeped in warm cardamom, saffron, and rose water infused sugar syrup.",
+    shortDescMr: "गुलाबजल आणि वेलचीच्या चाचणीत मुरलेले लुसलुशीत खवा गुलाबजाम.",
+    ingredients: ["Khoya", "Chenna (Paneer)", "Sugar Syrup", "Rose Water", "Cardamom"],
+    allergens: ["Dairy (Milk)"],
+    tags: ["Bestseller", "Fresh Daily", "Party Favorite"],
+    isBestseller: true,
+    modelType: "gulab_jamun",
+    image: "/images/dishes/gulab_jamun.jpg",
+  },
+  {
+    id: "ukadiche-modak-ganesh",
+    name: "Authentic Ukadiche Modak",
+    nameMr: "अस्सल उकडीचे मोदक",
+    nameHi: "पारंपरिक उकडीचे मोदक",
+    category: "festive_hampers",
+    fixedPrice: 320,
+    unit: "box",
+    shortDesc: "Steamed fragrant rice flour dumplings stuffed with freshly grated coconut, organic jaggery, cardamom, and nutmeg.",
+    shortDescMr: "तांदळाच्या उकडीत नारळ, गूळ, जायफळाचे सारण भरून वाफवलेले सुवासिक मोदक (६ नग).",
+    ingredients: ["Fragrant Rice Flour", "Fresh Grated Coconut", "Organic Jaggery", "Nutmeg", "Cardamom", "Pure Ghee"],
+    allergens: ["Dairy (Ghee)"],
+    tags: ["Ganesh Chaturthi Special", "Authentic Maharashtrian", "Steamed", "Daily Fresh"],
+    isFestiveSpecial: true,
+    modelType: "modak",
+    image: "/images/dishes/ukadiche_modak.jpg",
+  },
+  {
+    id: "kanda-poha-puneri",
+    name: "Special Indrayani Kanda Poha",
+    nameMr: "इंद्रायणी खास कांदा पोहे",
+    nameHi: "इंद्रायणी स्पेशल कांदा पोहा",
+    category: "breakfast_snacks",
+    fixedPrice: 35,
+    unit: "plate",
+    shortDesc: "Fresh flattened rice tempered with mustard seeds, curry leaves, peanuts, fresh grated coconut, and lemon.",
+    shortDescMr: "सकाळी ७ वाजता मिळणारे गरमागरम कांदे पोहे, शेंगदाणे, खोबरे आणि लिंबू.",
+    ingredients: ["Thick Poha (Flattened Rice)", "Onions", "Peanuts", "Curry Leaves", "Mustard Seeds", "Fresh Coconut", "Pomegranate"],
+    allergens: ["Peanuts"],
+    tags: ["Breakfast Hero", "7:00 AM Fresh", "Hot & Healthy", "Bhosari Favorite"],
+    isBestseller: true,
+    modelType: "motichoor",
+    image: "/images/dishes/kanda_poha.jpg",
+  },
+  {
+    id: "puneri-misal-pav",
+    name: "Zanzanit Puneri Misal Pav",
+    nameMr: "झणझणीत पुणेरी मिसळ पाव",
+    nameHi: "झनझनीत पुणेरी मिसल पाव",
+    category: "breakfast_snacks",
+    fixedPrice: 85,
+    unit: "plate",
+    shortDesc: "Spicy sprouted moth bean curry with crunchy farsan, onions, lemon, and freshly baked pav. An MIDC favorite.",
+    shortDescMr: "चवदार उसळ, खमंग फरसाण, तर्री आणि मऊ पावासह अस्सल मिसळ.",
+    ingredients: ["Sprouted Matki", "Authentic Tari Spices", "Special Farsan", "Chopped Onions", "Fresh Pav"],
+    allergens: ["Gluten (Pav)"],
+    tags: ["Breakfast Legend", "Spicy Pune Style", "Filling Meal"],
+    isBestseller: true,
+    modelType: "motichoor",
+    image: "/images/dishes/misal_pav.jpg",
+  },
+  {
+    id: "crispy-samosa-chutney",
+    name: "Golden Punjabi Samosa (Pair)",
+    nameMr: "गरमागरम समोसा जोडी",
+    nameHi: "गरमा-गरम समोसा",
+    category: "breakfast_snacks",
+    fixedPrice: 40,
+    unit: "plate",
+    shortDesc: "Crisp flaky pastry stuffed with spiced potatoes, green peas, and whole coriander seeds with sweet chutney.",
+    shortDescMr: "खमंग बटाटा सारणाचा कुरकुरीत समोसा, पुदिना व चिंचेची चटणी.",
+    ingredients: ["Flour (Maida)", "Potatoes", "Green Peas", "Coriander", "Cumin", "Spices"],
+    allergens: ["Gluten (Wheat)"],
+    tags: ["Fresh Batches All Day", "Crisp", "Chutney Included"],
+    modelType: "peda",
+    image: "/images/dishes/samosa.jpg",
+  },
+  {
+    id: "puneri-bhakarwadi",
+    name: "Crispy Puneri Bhakarwadi",
+    nameMr: "खुसखुशीत पुणेरी बाकरवडी",
+    nameHi: "कुरकुरी पुणेरी बाकरवड़ी",
+    category: "namkeen_savouries",
+    pricePerKg: 380,
+    unit: "kg",
+    shortDesc: "Crisp spiral savoury roll stuffed with roasted coconut, sesame, poppy seeds, and traditional Maharashtrian spices.",
+    shortDescMr: "तीळ, खोबरे आणि मसाल्यांचे खमंग सारण असलेली पारंपरिक बाकरवडी.",
+    ingredients: ["Besan", "Maida", "Roasted Coconut", "Sesame Seeds", "Poppy Seeds", "Traditional Spices"],
+    allergens: ["Sesame", "Gluten"],
+    tags: ["Pune Special", "Tea-Time Companion", "Long Shelf Life"],
+    modelType: "peda",
+    image: "/images/dishes/bhakarwadi.jpg",
+  },
+  {
+    id: "bengali-rasgulla",
+    name: "Calcutta Sponge Rasgulla",
+    nameMr: "कलकत्ता स्पंज रसगुल्ला",
+    nameHi: "स्पंज रसगुल्ला",
+    category: "bengali_delights",
+    pricePerKg: 460,
+    unit: "kg",
+    shortDesc: "Delicately spongy chhena spheres simmered in light sugar syrup until pillowy, juicy, and fragrant.",
+    shortDescMr: "ताजा आणि स्पंजी बंगाली रसगुल्ला.",
+    ingredients: ["Fresh Cow Milk Chhena", "Sugar Syrup", "Rose Water"],
+    allergens: ["Dairy (Milk)"],
+    tags: ["Bengali Sweet", "Low Fat", "Eggless"],
+    modelType: "gulab_jamun",
+    image: "/images/dishes/rasgulla.jpg",
+  },
+  {
+    id: "malai-barfi-kesar",
+    name: "Kesar Malai Barfi",
+    nameMr: "केशर मलाई बर्फी",
+    nameHi: "केसर मलाई बर्फ़ी",
+    category: "traditional_mithai",
+    pricePerKg: 760,
+    unit: "kg",
+    shortDesc: "Double-layered rich condensed milk barfi with fragrant saffron crown and chopped almonds.",
+    shortDescMr: "दूध आणि मलईची रसरशीत केशर बर्फी, बदामाचे काप.",
+    ingredients: ["Condensed Whole Milk", "Mawa", "Sugar", "Saffron", "Almonds"],
+    allergens: ["Dairy (Milk)", "Tree Nuts (Almonds)"],
+    tags: ["Milk Mithai", "Pure Ghee", "Melt-In-Mouth"],
+    modelType: "barfi",
+    image: "/images/dishes/malai_barfi.jpg",
+  },
+  {
+    id: "royal-mithai-hamper-1kg",
+    name: "Indrayani Royal Gold Hamper (1kg)",
+    nameMr: "इंद्रायणी रॉयल गोल्ड हॅम्पर (१ किलो)",
+    nameHi: "इंद्रायणी रॉयल गोल्ड हैम्पर",
+    category: "festive_hampers",
+    fixedPrice: 1199,
+    unit: "box",
+    shortDesc: "Opulent gift box containing Kaju Katli (250g), Desi Ghee Motichoor (250g), Kesar Peda (250g), and Mawa Barfi (250g).",
+    shortDescMr: "काजू कतली, मोतीचूर लाडू, केशर पेढा आणि मावा बर्फी यांचा भव्य शाही बॉक्स.",
+    ingredients: ["Assorted Premium Dry Fruits", "Pure Ghee", "Mawa", "Saffron", "Cardamom"],
+    allergens: ["Dairy", "Tree Nuts (Cashews, Pistachios, Almonds)"],
+    tags: ["Festive Gifting", "Corporate Favorite", "Custom Ribbon", "Luxury Box"],
+    isFestiveSpecial: true,
+    modelType: "kaju_katli",
+    image: "/images/dishes/mithai_hamper.jpg",
+  }
+];
