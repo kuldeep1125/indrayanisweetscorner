@@ -9,6 +9,7 @@ import MainContent from "@/components/MainContent";
 import CartDrawer from "@/components/CartDrawer";
 import TransparencyModal from "@/components/TransparencyModal";
 import Footer from "@/components/Footer";
+import MobileBottomNav from "@/components/MobileBottomNav";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: "#120305",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -65,6 +67,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cinzel.variable} ${plusJakarta.variable} ${greatVibes.variable}`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </head>
       <body className="antialiased min-h-screen bg-jali-pattern text-[#1A1615] flex flex-col">
         <ShopProvider>
           <Navbar />
@@ -74,6 +81,8 @@ export default function RootLayout({
           <CartDrawer />
           <TransparencyModal />
           <Footer />
+          {/* [ADDED] World-class native mobile bottom navigation bar */}
+          <MobileBottomNav />
         </ShopProvider>
       </body>
     </html>

@@ -768,7 +768,7 @@ export default function CustomBoxPage() {
                   value={pantrySearch}
                   onChange={e => setPantrySearch(e.target.value)}
                   placeholder="Search sweets (Kaju Katli, Modak, Peda...)"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-gold-400"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-gold-400"
                 />
               </div>
 
@@ -937,7 +937,7 @@ export default function CustomBoxPage() {
                   <select
                     value={cardOccasion}
                     onChange={e => setCardOccasion(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs font-medium focus:border-gold-400 outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs font-medium focus:border-gold-400 outline-none"
                   >
                     {OCCASIONS.map(occ => (
                       <option key={occ.id} value={occ.id}>
@@ -957,7 +957,7 @@ export default function CustomBoxPage() {
                       placeholder="e.g. Ramesh Kaka & Family"
                       value={cardRecipient}
                       onChange={e => setCardRecipient(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none"
                     />
                   </div>
                   <div>
@@ -969,7 +969,7 @@ export default function CustomBoxPage() {
                       placeholder="e.g. Deshmukh Family"
                       value={cardSender}
                       onChange={e => setCardSender(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none"
                     />
                   </div>
                 </div>
@@ -983,7 +983,7 @@ export default function CustomBoxPage() {
                     value={cardMessage}
                     onChange={e => setCardMessage(e.target.value)}
                     placeholder="Write your personal blessing or festive message..."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none leading-relaxed"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none leading-relaxed"
                   />
                 </div>
               </div>
@@ -1220,8 +1220,9 @@ export default function CustomBoxPage() {
       {/* =========================================================================
           PERSISTENT MOBILE ACTION BAR (Fixed on Steps 1-3 for One-Handed Ergonomics)
       ========================================================================== */}
+      {/* [FIXED] Positioned cleanly above native mobile bottom navigation bar with safe area inset */}
       {currentStep < 4 && (
-        <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-zinc-950/95 backdrop-blur-xl border-t border-gold-400/30 p-3 shadow-2xl">
+        <div className="md:hidden fixed bottom-[calc(60px+env(safe-area-inset-bottom,0px))] inset-x-0 z-40 bg-zinc-950/95 backdrop-blur-xl border-t border-gold-400/30 p-3 shadow-2xl">
           <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
             <div>
               <div className="font-serif font-bold text-lg text-gold-300 leading-tight">

@@ -21,13 +21,16 @@ import {
   ShieldCheck,
   Star,
   ChevronRight,
+  Plus,
+  Minus,
 } from "lucide-react";
 // [ADDED] Verified Social Media & Authentic Craft Integration
 import SocialGallerySection from "@/components/SocialGallerySection";
 import { CURATED_SOCIAL_POSTS } from "@/data/socialMedia";
 
 export default function MenuPage() {
-  const { addToCart } = useShop();
+  // [FIXED] Full cart state integration for quick-commerce add/stepper and floating bottom summary
+  const { addToCart, updateQuantity, cart, totalItemCount, cartTotal, setIsCartOpen } = useShop();
 
   const [activeCategory, setActiveCategory] = useState<ProductCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,13 +111,21 @@ export default function MenuPage() {
     return p.pricePerKg;
   };
 
+  // [ADDED] Quick-commerce cart lookup helper for fluid quantity steppers
+  const getCartItemForProduct = (productId: string, weight: string) => {
+    return cart.find(
+      item => item.product?.id === productId && item.weightOption === weight
+    );
+  };
+
   const handleAddToCartWithCelebration = (p: ProductItem, weight: string) => {
-    addToCart(p, weight, 1);
+    // [FIXED] Pass openDrawer=false to allow uninterrupted browsing on mobile while updating the live floating cart bar
+    addToCart(p, weight, 1, false);
     try {
       confetti({
-        particleCount: 50,
-        spread: 50,
-        origin: { y: 0.8 },
+        particleCount: 35,
+        spread: 45,
+        origin: { y: 0.85 },
         colors: ["#D4AF37", "#D95D1E", "#681622"],
       });
     } catch {
@@ -166,12 +177,13 @@ export default function MenuPage() {
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search delicacies (Poha, Kaju Katli, Modak, Samosa... English, मराठी, हिंदी)"
               aria-label="Search delicacies"
-              className="w-full pl-11 pr-10 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/60 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-all"
+              className="w-full pl-11 pr-10 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/60 text-base sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition-all"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 p-1"
+                aria-label="Clear search query"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -182,7 +194,7 @@ export default function MenuPage() {
           <div className="flex items-center gap-2 w-full md:w-auto">
             <button
               onClick={() => setFilterPureGhee(!filterPureGhee)}
-              className={`flex-1 md:flex-none flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl text-xs font-bold transition-all border ${
+              className={`flex-1 md:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl text-xs font-bold transition-all border ${
                 filterPureGhee
                   ? "bg-amber-600 text-white border-amber-600 shadow-sm"
                   : "bg-amber-50/80 dark:bg-zinc-800 text-amber-900 dark:text-amber-200 border-amber-300/40 hover:bg-amber-100"
@@ -194,7 +206,7 @@ export default function MenuPage() {
 
             <button
               onClick={() => setFilterBestseller(!filterBestseller)}
-              className={`flex-1 md:flex-none flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl text-xs font-bold transition-all border ${
+              className={`flex-1 md:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl text-xs font-bold transition-all border ${
                 filterBestseller
                   ? "bg-saffron-600 text-white border-saffron-600 shadow-sm"
                   : "bg-saffron-50/80 dark:bg-zinc-800 text-saffron-900 dark:text-saffron-200 border-saffron-300/40 hover:bg-saffron-100"
@@ -206,21 +218,37 @@ export default function MenuPage() {
           </div>
         </div>
 
-        {/* Category Filter Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none pt-1">
+        {/* [ADDED] Quick-Tap Search Inspiration Chips for One-Handed Mobile Browsing */}
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pt-1 text-[11px] text-zinc-500">
+          <span className="font-bold text-maroon-700 dark:text-gold-400 shrink-0">Popular:</span>
+          {["Kaju Katli", "Motichoor Ladoo", "Kanda Poha", "Ukadiche Modak", "Samosa", "Bhakarwadi"].map(item => (
+            <button
+              key={item}
+              onClick={() => setSearchQuery(item)}
+              className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 hover:text-gold-400 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap active:scale-95 text-[10px] font-semibold"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* [ADDED] Sticky Category Navigation Bar for Instant Mobile Quick-Jump */}
+      <div className="sticky top-16 sm:top-20 z-30 bg-white/95 dark:bg-[#120B09]/95 backdrop-blur-xl p-2.5 sm:p-3.5 rounded-2xl border border-gold-400/30 shadow-md -mx-2 sm:mx-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none py-0.5">
           {categories.map(cat => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 active:scale-95 shrink-0 ${
                 activeCategory === cat.key
-                  ? "bg-maroon-700 text-white shadow-sm ring-1 ring-gold-400/40"
-                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-gold-400/10 hover:text-gold-700"
+                  ? "bg-gradient-to-r from-saffron-600 via-amber-600 to-gold-500 text-white shadow-md ring-1 ring-gold-300/40"
+                  : "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 hover:bg-gold-400/10 hover:text-gold-700 border border-zinc-200/60 dark:border-zinc-700"
               }`}
             >
-              <span>{cat.label}</span>
+              <span>{cat.label.split("•")[0].trim()}</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                activeCategory === cat.key ? "bg-white/20 text-white" : "bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400"
+                activeCategory === cat.key ? "bg-black/25 text-white" : "bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400"
               }`}>
                 {cat.count}
               </span>
@@ -229,42 +257,45 @@ export default function MenuPage() {
         </div>
       </div>
 
-      {/* Confectionery Showcase Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* [REFACTORED] High-Density Quick-Commerce 2-Column Mobile Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
         {filteredProducts.map(p => {
           const currentWeight = getWeightForProduct(p);
           const price = calculatePrice(p, currentWeight);
+          const cartItem = getCartItemForProduct(p.id, currentWeight);
 
           return (
             <div
               key={p.id}
-              className="bg-white dark:bg-zinc-900 rounded-3xl border border-gold-400/20 overflow-hidden shadow-luxury hover:shadow-luxury-hover flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300"
+              className="bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl border border-gold-400/20 overflow-hidden shadow-luxury hover:shadow-luxury-hover flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300"
             >
               {/* Product Visual Banner */}
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+              <div className="relative h-36 sm:h-52 w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
                 <Image
                   src={p.image}
                   alt={p.name}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
                 {/* Badges Overlay */}
-                <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
+                <div className="absolute top-2 left-2 flex flex-wrap gap-1 z-10">
                   {p.isBestseller && (
-                    <span className="bg-saffron-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md flex items-center gap-1">
-                      <Star className="w-2.5 h-2.5 fill-white" /> Bestseller
+                    <span className="bg-saffron-600 text-white text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-md flex items-center gap-0.5">
+                      <Star className="w-2.5 h-2.5 fill-white" />
+                      <span className="hidden xs:inline">Bestseller</span>
                     </span>
                   )}
                   {p.isPureGhee && (
-                    <span className="bg-amber-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md flex items-center gap-1">
-                      <Flame className="w-2.5 h-2.5 fill-white" /> Pure Ghee
+                    <span className="bg-amber-600 text-white text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-md flex items-center gap-0.5">
+                      <Flame className="w-2.5 h-2.5 fill-white" />
+                      <span>Ghee</span>
                     </span>
                   )}
                   {p.isFestiveSpecial && (
-                    <span className="bg-maroon-700 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md">
-                      Festive Special
+                    <span className="bg-maroon-700 text-white text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-md hidden sm:inline">
+                      Festive
                     </span>
                   )}
                 </div>
@@ -272,47 +303,45 @@ export default function MenuPage() {
                 {/* Inspect Recipe/Nutrients Action */}
                 <button
                   onClick={() => setSelectedProductDetails(p)}
-                  className="absolute bottom-3 right-3 bg-black/75 hover:bg-black/90 backdrop-blur-md text-white w-9 h-9 rounded-full text-xs shadow-md transition-all hover:scale-110 z-10 flex items-center justify-center active:scale-95"
+                  className="absolute bottom-2 right-2 bg-black/75 hover:bg-black/90 backdrop-blur-md text-white w-7 h-7 sm:w-9 sm:h-9 rounded-full text-xs shadow-md transition-all hover:scale-110 z-10 flex items-center justify-center active:scale-90"
                   title="View Ingredients, Allergens & Halwai Notes"
                   aria-label={`View recipe dossier for ${p.name}`}
                 >
-                  <Info className="w-4 h-4" />
+                  <Info className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
 
               {/* Product Information Body */}
-              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
+              <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between space-y-2.5 sm:space-y-4">
                 <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-serif font-bold text-base text-zinc-900 dark:text-zinc-100 group-hover:text-maroon-700 dark:group-hover:text-gold-300 transition-colors">
-                      {p.name}
-                    </h3>
-                  </div>
-                  <div className="text-[11px] text-zinc-400 font-medium font-serif mt-0.5">
+                  <h3 className="font-serif font-bold text-xs sm:text-base text-zinc-900 dark:text-zinc-100 group-hover:text-maroon-700 dark:group-hover:text-gold-300 transition-colors line-clamp-1">
+                    {p.name}
+                  </h3>
+                  <div className="text-[10px] sm:text-[11px] text-zinc-400 font-medium font-serif truncate mt-0.5">
                     {p.nameMr}
                   </div>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-2 leading-relaxed">
+                  <p className="hidden sm:block text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-2 leading-relaxed">
                     {p.shortDesc}
                   </p>
                 </div>
 
                 {/* Portions & Price Section */}
-                <div className="space-y-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+                <div className="space-y-2 sm:space-y-3 pt-2 sm:pt-3 border-t border-zinc-100 dark:border-zinc-800">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-zinc-500">Price for {currentWeight}:</span>
-                    <span className="font-serif font-bold text-xl text-maroon-800 dark:text-gold-300">
+                    <span className="text-[10px] sm:text-xs text-zinc-500 font-medium">{currentWeight}:</span>
+                    <span className="font-serif font-bold text-sm sm:text-xl text-maroon-800 dark:text-gold-300">
                       ₹{price}
                     </span>
                   </div>
 
                   {/* Weight Options Selector */}
                   {p.unit === "kg" ? (
-                    <div className="grid grid-cols-3 gap-1.5">
+                    <div className="grid grid-cols-3 gap-1">
                       {["250g", "500g", "1kg"].map(w => (
                         <button
                           key={w}
                           onClick={() => handleWeightSelect(p.id, w)}
-                          className={`min-h-[40px] py-1.5 text-xs font-bold rounded-xl border transition-all active:scale-95 flex items-center justify-center ${
+                          className={`min-h-[28px] sm:min-h-[38px] py-1 text-[9px] sm:text-xs font-bold rounded-lg sm:rounded-xl border transition-all active:scale-95 flex items-center justify-center ${
                             currentWeight === w
                               ? "bg-maroon-700 text-white border-maroon-700 shadow-xs"
                               : "bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-gold-400"
@@ -323,25 +352,78 @@ export default function MenuPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-[11px] text-zinc-400 italic bg-zinc-50 dark:bg-zinc-800/40 p-2 rounded-lg text-center min-h-[40px] flex items-center justify-center">
-                      Served fresh per {p.unit}
+                    <div className="text-[9px] sm:text-[11px] text-zinc-400 italic bg-zinc-50 dark:bg-zinc-800/40 p-1 rounded-lg text-center min-h-[28px] sm:min-h-[38px] flex items-center justify-center truncate">
+                      Per {p.unit}
                     </div>
                   )}
 
-                  {/* Add to Cart Button */}
-                  <button
-                    onClick={() => handleAddToCartWithCelebration(p, currentWeight)}
-                    className="w-full min-h-[44px] py-3 px-4 bg-gradient-to-r from-saffron-600 via-saffron-500 to-amber-500 hover:from-saffron-500 hover:to-amber-400 text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 active:scale-95"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Add to Box & Cart</span>
-                  </button>
+                  {/* Quick-Commerce Stepper or Tactile ADD Button */}
+                  {cartItem && cartItem.quantity > 0 ? (
+                    <div className="w-full min-h-[36px] sm:min-h-[44px] py-1 px-2 bg-gradient-to-r from-maroon-700 to-maroon-800 text-white rounded-xl shadow-md flex items-center justify-between">
+                      <button
+                        onClick={() => updateQuantity(cartItem.id, -1)}
+                        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg hover:bg-black/30 active:scale-90 transition-transform text-white font-bold"
+                        aria-label="Decrease quantity"
+                      >
+                        <Minus className="w-3.5 h-3.5" />
+                      </button>
+                      <span className="font-extrabold text-xs sm:text-sm text-gold-300">
+                        {cartItem.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(cartItem.id, 1)}
+                        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg hover:bg-black/30 active:scale-90 transition-transform text-white font-bold"
+                        aria-label="Increase quantity"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleAddToCartWithCelebration(p, currentWeight)}
+                      className="w-full min-h-[36px] sm:min-h-[44px] py-2 sm:py-3 px-3 bg-gradient-to-r from-saffron-600 via-saffron-500 to-amber-500 hover:from-saffron-500 hover:to-amber-400 text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 active:scale-95"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>ADD</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* [ADDED] Blinkit / Swiggy Style Persistent Floating Cart Summary Bar */}
+      {totalItemCount > 0 && (
+        <div className="fixed bottom-[calc(68px+env(safe-area-inset-bottom,0px))] md:bottom-6 inset-x-3 sm:inset-x-6 max-w-lg mx-auto z-40 animate-slideUp">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            aria-label="View shopping cart"
+            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-maroon-800 via-maroon-900 to-saffron-800 text-white shadow-2xl border border-gold-400/50 flex items-center justify-between active:scale-[0.98] transition-transform backdrop-blur-md"
+          >
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="w-8 h-8 rounded-xl bg-gold-400/20 text-gold-300 flex items-center justify-center font-bold text-xs border border-gold-400/30">
+                <ShoppingBag className="w-4 h-4" />
+              </div>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                  <span>{totalItemCount} {totalItemCount === 1 ? "Item" : "Items"}</span>
+                  <span className="text-gold-300">•</span>
+                  <span className="text-gold-300 font-serif">₹{cartTotal}</span>
+                </div>
+                <div className="text-[10px] text-zinc-300">
+                  Tap to view sweets in box & checkout
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-bold text-gold-300 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-gold-400/30">
+              <span>View Cart</span>
+              <ChevronRight className="w-4 h-4" />
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Empty State */}
       {filteredProducts.length === 0 && (

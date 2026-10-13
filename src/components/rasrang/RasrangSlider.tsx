@@ -488,7 +488,8 @@ export default function RasrangSlider() {
                   Contact
                 </Link>
                 <a
-                  href="https://wa.me/919876543210?text=Hello%20Indrayani%20Sweet%20Corner,%20I%20would%20like%20to%20order"
+                  // [FIXED] Verified official business WhatsApp contact
+                  href="https://wa.me/919922210909?text=Hello%20Indrayani%20Sweet%20Corner,%20I%20would%20like%20to%20inquire%20about%20fresh%20sweets%20and%20gifting%20boxes."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-sm"

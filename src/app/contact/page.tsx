@@ -73,6 +73,43 @@ export default function ContactPage() {
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
           <span>Open Today: 7:00 AM – 10:00 PM (Hot Breakfast until 11:30 AM)</span>
         </div>
+
+        {/* [ADDED] Mobile 1-Tap Quick Action Dock for Instant Thumb Reach */}
+        <div className="sm:hidden grid grid-cols-3 gap-2.5 pt-2">
+          <a
+            href={`tel:${SHOP_DATA.contact.phone}`}
+            className="flex flex-col items-center justify-center p-3 rounded-2xl bg-maroon-700 text-white shadow-md active:scale-95 transition-transform"
+            aria-label="Call store counter"
+          >
+            <Phone className="w-5 h-5 text-gold-300 mb-1" />
+            <span className="text-[11px] font-bold">Call Now</span>
+            <span className="text-[9px] text-zinc-200">काऊंटर फोन</span>
+          </a>
+
+          <a
+            href={generateWhatsAppOrderUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center justify-center p-3 rounded-2xl bg-emerald-600 text-white shadow-md active:scale-95 transition-transform"
+            aria-label="Chat on WhatsApp"
+          >
+            <MessageCircle className="w-5 h-5 text-white mb-1" />
+            <span className="text-[11px] font-bold">WhatsApp</span>
+            <span className="text-[9px] text-emerald-100">ऑर्डर चॅट</span>
+          </a>
+
+          <a
+            href={SHOP_DATA.directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center justify-center p-3 rounded-2xl bg-zinc-900 dark:bg-zinc-800 text-white border border-gold-400/30 shadow-md active:scale-95 transition-transform"
+            aria-label="Open Google Maps GPS navigation"
+          >
+            <Navigation className="w-5 h-5 text-gold-400 mb-1" />
+            <span className="text-[11px] font-bold">Directions</span>
+            <span className="text-[9px] text-gold-300">नकाशा GPS</span>
+          </a>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -255,10 +292,11 @@ export default function ContactPage() {
                     id="contact-name"
                     type="text"
                     required
+                    autoComplete="name"
                     placeholder={inquiryMode === "corporate" ? "e.g. Tata Motors HR / Rajesh Patil" : "e.g. Amit Kulkarni"}
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
                   />
                 </div>
 
@@ -269,11 +307,13 @@ export default function ContactPage() {
                   <input
                     id="contact-phone"
                     type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
                     required
                     placeholder="e.g. 9876543210"
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
                   />
                 </div>
               </div>
@@ -287,7 +327,7 @@ export default function ContactPage() {
                     id="contact-occasion"
                     value={occasion}
                     onChange={e => setOccasion(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none font-medium"
+                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none font-medium"
                   >
                     <option value="Diwali Corporate Sweet Boxes">Diwali Corporate Sweet Boxes</option>
                     <option value="Ganesh Chaturthi Modak Prasad">Ganesh Chaturthi Modak Prasad</option>
@@ -307,7 +347,7 @@ export default function ContactPage() {
                       id="contact-quantity"
                       value={boxQuantity}
                       onChange={e => setBoxQuantity(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none font-medium"
+                      className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none font-medium"
                     >
                       <option value="10 - 25 Boxes">10 – 25 Boxes</option>
                       <option value="25 - 50 Boxes">25 – 50 Boxes</option>
@@ -325,7 +365,7 @@ export default function ContactPage() {
                       type="date"
                       value={date}
                       onChange={e => setDate(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
+                      className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
                     />
                   </div>
                 )}
@@ -345,7 +385,7 @@ export default function ContactPage() {
                   }
                   value={message}
                   onChange={e => setMessage(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-base sm:text-xs text-zinc-900 dark:text-zinc-100 focus:border-gold-400 outline-none"
                 />
               </div>
 

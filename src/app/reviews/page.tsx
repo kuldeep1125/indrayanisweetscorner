@@ -423,7 +423,7 @@ export default function ReviewsPage() {
       </section>
 
       {/* Review Category Filter Bar */}
-      <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none px-1">
         {[
           { key: "all" as const, label: "All Reviews • सर्व प्रतिक्रिया" },
           { key: "mithai" as const, label: "Traditional Mithai • मिठाई" },
@@ -590,7 +590,7 @@ export default function ReviewsPage() {
                   placeholder="e.g. Anand Joshi"
                   value={formName}
                   onChange={e => setFormName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none"
                 />
               </div>
 
@@ -602,7 +602,7 @@ export default function ReviewsPage() {
                   id="review-category"
                   value={formCategory}
                   onChange={e => setFormCategory(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none"
                 >
                   <option value="Traditional Mithai">Traditional Mithai (Motichoor, Peda, Kaju Katli)</option>
                   <option value="Morning Breakfast">Morning Breakfast (Kanda Poha, Misal, Samosa)</option>
@@ -634,7 +634,7 @@ export default function ReviewsPage() {
                 placeholder="Share your thoughts on the taste, pure ghee aroma, breakfast freshness, or service..."
                 value={formFeedback}
                 onChange={e => setFormFeedback(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none leading-relaxed italic font-serif"
+                className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none leading-relaxed italic font-serif"
               />
             </div>
 
@@ -722,7 +722,7 @@ export default function ReviewsPage() {
                 type="text"
                 value={formName}
                 onChange={e => setFormName(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none"
               />
             </div>
 
@@ -746,7 +746,7 @@ export default function ReviewsPage() {
                 rows={4}
                 value={formFeedback}
                 onChange={e => setFormFeedback(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs focus:border-gold-400 outline-none leading-relaxed italic font-serif"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-base sm:text-xs focus:border-gold-400 outline-none leading-relaxed italic font-serif"
               />
             </div>
 

@@ -32,7 +32,7 @@ interface ShopContextType {
   setLanguage: (lang: Language) => void;
   t: Translations;
   cart: CartItem[];
-  addToCart: (product: ProductItem, weightOption?: string, quantity?: number) => void;
+  addToCart: (product: ProductItem, weightOption?: string, quantity?: number, openDrawer?: boolean) => void;
   addCustomBoxToCart: (size: 4 | 6 | 9, sweets: { product: ProductItem; count: number }[], estimatedPrice: number) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, delta: number) => void;
@@ -119,7 +119,13 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const addToCart = (product: ProductItem, weightOption: string = "500g", quantity: number = 1) => {
+  // [FIXED] Added optional openDrawer parameter (default true) for fluid native-app cart interactions
+  const addToCart = (
+    product: ProductItem,
+    weightOption: string = "500g",
+    quantity: number = 1,
+    openDrawer: boolean = true
+  ) => {
     let price = product.fixedPrice || 0;
     if (product.pricePerKg) {
       if (weightOption === "250g") price = Math.round(product.pricePerKg * 0.25);
@@ -147,7 +153,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       };
       saveCart([...cart, newItem]);
     }
-    setIsCartOpen(true);
+    if (openDrawer) {
+      setIsCartOpen(true);
+    }
   };
 
   const addCustomBoxToCart = (

@@ -79,7 +79,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#14100F] text-[#F8F5EC] border-t border-gold-400/30 pt-16 pb-12 overflow-hidden">
+    // [FIXED] Padded bottom for mobile native navigation bar and device safe-area insets
+    <footer className="relative bg-[#14100F] text-[#F8F5EC] border-t border-gold-400/30 pt-16 pb-[calc(88px+env(safe-area-inset-bottom,0px))] md:pb-12 overflow-hidden">
       {/* JSON-LD Structured Data for Local SEO */}
       <script
         type="application/ld+json"
